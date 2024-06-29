@@ -112,3 +112,16 @@ An open-source orchestration framework for developing applications using LLMs. I
 ### Additional Resources
 - [RAG Part 1: From Naive to Advanced](https://medium.com/@j13mehul/rag-part-1-from-naive-to-advanced-cb40674a7738)
 - [Hallucinations in LLM Models with Respect to Legal Domain](https://hai.stanford.edu/news/hallucinating-law-legal-mistakes-large-language-models-are-pervasive)
+
+
+### Research papers
+
+### Chatbots in Academia: A Retrieval-Augmented Generation Approach for Improved Efficient Information Access
+
+- **Purpose**: Develop and evaluate a chatbot using Retrieval-Augmented Generation (RAG) with OpenAI's GPT-3.5 for academic information access.
+- **Model**: Utilizes GPT-3.5, focusing on the decoder part of the transformer architecture for effective next-word prediction.
+- **Comparison**: Compared against Google Gemini Pro, GPT-3.5-Turbo outperforms in linguistic metrics like ROUGE and BLEU scores.
+- **Performance**: Combines cosine similarity search with OpenAI Ada embeddings for the retriever, achieving favorable recall and precision metrics.
+- **Conclusion**: The chatbot is effective in providing relevant academic information, with potential for further enhancement through parameter tuning and knowledge base expansion.
+
+
