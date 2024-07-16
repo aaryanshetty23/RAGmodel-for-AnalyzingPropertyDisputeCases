@@ -1,4 +1,4 @@
-# RAG Model for Indian Property Law Analysis
+# User-Centric RAG Model for Indian Legal Document Analysis
 
 ## Table of Contents
 1. [Problem Statement](#problem-statement)
@@ -13,59 +13,67 @@
 
 ## Problem Statement
 
-Legal professionals in India face significant challenges when researching and analyzing property dispute cases due to the complexity and multifaceted nature of Indian property law. This process is often time-consuming and may lead to overlooked relevant information, potentially affecting the quality of legal advice and representation.
+Legal professionals and researchers in India need an efficient way to analyze specific legal documents relevant to their work. The current process of manually reviewing documents is time-consuming and may lead to overlooked information. There's a need for a system that allows users to select from pre-loaded legal documents and upload their own, then interact with this information through a chatbot interface.
 
 ## Context
 
-The Indian legal system, particularly in the domain of property law, involves numerous statutes, case laws, and state-specific regulations. Legal professionals spend considerable time researching relevant precedents and statutes for property dispute cases. This manual research process can be inefficient and may not always capture all relevant information.
+The Indian legal system involves numerous statutes, acts, and case laws. Efficient analysis of these documents is crucial for effective legal work. This system aims to streamline this process by providing a user-centric approach to document selection and analysis.
 
 ## Use Case
 
-Consider a scenario where a lawyer is presented with a case involving a tenant refusing to vacate a property in Mumbai after lease expiration, with the landlord seeking repossession. The lawyer needs to quickly understand:
+A lawyer is preparing for a property dispute case. They need to review:
 
-1. Relevant sections of the Maharashtra Rent Control Act
-2. Recent precedents set by the Bombay High Court and Supreme Court in similar cases
-3. Any specific local regulations that might apply
+1. Relevant sections of the Transfer of Property Act related to the case
+2. Questions regarding Succession Act or any other relevant acts
+
+Using our system, the lawyer can:
+1. Select the Transfer of Property Act and Succession Act from pre-loaded documents
+2. Upload any other relevant documents/pds if required
+3. Use the QA bot to ask specific questions about these documents and how they relate to their case
 
 ## Our Solution
 
-We are developing a Retrieval-Augmented Generation (RAG) model that will revolutionize how legal professionals approach property law research and analysis in India. Our solution combines advanced natural language processing techniques with a comprehensive database of Indian legal documents to provide rapid, accurate, and context-aware legal insights.
-
+We are developing a user-centric Retrieval-Augmented Generation (RAG) model that revolutionizes how legal professionals approach document analysis in India. Our solution combines advanced natural language processing with a flexible document selection system and an interactive QA bot interface.
 
 Key components of our solution include:
 
-1. **Comprehensive Legal Database**: A curated collection of Indian property laws, case precedents, and legal documents.
-2. **Advanced Retrieval System**: Utilizes state-of-the-art embedding techniques and similarity search to find the most relevant legal information.
-3. **Intelligent Analysis Engine**: Leverages large language models to generate insightful legal analysis based on retrieved information.
-4. **User-Friendly Interface**: Allows legal professionals to input case details and receive comprehensive reports easily.
+1. **Pre-loaded Legal Document Library**: 
+- It includes a number of documents such as the Transfer of Property Act, succession act etc. related to property law in India.
+2. **User Document Upload**: Capability for users to upload their own documents for analysis.
+3. **Document Selection Interface**: Allows users to choose which documents to include in their analysis session.
+4. **Advanced Retrieval System**: Utilizes state-of-the-art embedding techniques and similarity search to find relevant information.
+5. **Interactive Chatbot**: Leverages large language models to answer user queries based on selected documents.
 
 ## Technical Implementation
 
-Our RAG model leverages the following technologies:
-
-- **Language Model**: OpenAI API or Google Gemini Model API for generating embeddings and final analysis
-- **Vector Database**: Pinecone for efficient similarity search of legal document embeddings
-- **Frontend**: Streamlit, Flask, or Tkinter (to be decided) for creating an intuitive user interface
-
+## Architecture Diagram
+![alt text](img/image-4.png)
 ![alt text](img/image-1.png)
 ![alt text](img/image-2.png)
+
+## Initial frontend design
+![alt text](img/image-3.png)
+
+The system leverages the following technologies:
+
+- **Language Model**: OpenAI API or Google Gemini Model API for generating embeddings and powering the chatbot
+- **Vector Database**: Pinecone for efficient similarity search and storage of legal document embeddings
+- **Frontend**: Flask, HTML, CSS, for creating an intuitive user interface
+
 ## Key Features
 
-1. **Information Retrieval**: Accurately retrieve relevant case laws, statutes, and legal principles from our comprehensive database of Indian legal documents.
-2. **Case Law Analysis**: Identify and summarize the most pertinent previous court decisions, highlighting key legal principles.
-3. **Statutory Interpretation**: Identify and explain relevant sections of key property-related acts (e.g., Transfer of Property Act, 1882; Land Acquisition Act, 2013).
-4. **Preliminary Legal Analysis**: Generate a preliminary analysis of how relevant case laws and statutes might apply to the given property dispute scenario.
+1. **Document Selection**: Users can select from pre-loaded legal documents and upload their own.
+2. **Interactive Querying**: Users can ask questions about selected documents through a chatbot interface.
+3. **Contextual Understanding**: The system understands and responds to queries in the context of selected documents.
+4. **Information Synthesis**: Provides answers that synthesize information from multiple selected documents when relevant.
 
 ## Data Flow
 
-1. **Data Collection and Preprocessing**
-2. **Embedding Generation**
-3. **Vector Database Creation**
-4. **Query Processing**
-5. **Retrieval**
-6. **Generation**
-7. **Output**
-
+1. **Document Preparation**: Pre-load common legal documents into the vector database.
+2. **User Interaction**: Users select documents and/or upload their own through the frontend.
+3. **Document Processing**: Newly uploaded documents are processed and added to the session's vector database.
+4. **Query Processing**: User queries are processed and relevant information is retrieved from selected documents.
+5. **Response Generation**: The chatbot generates responses based on retrieved information and its language model.
 
 
 ## Future Enhancements
@@ -76,6 +84,7 @@ Our RAG model leverages the following technologies:
 
 2. **Interactive Q&A**
 - Implement a question-answering system that allows users to ask specific legal questions and receive instant answers based on the RAG model's analysis.
+
 
 3. **Integration with Legal Research Platforms**
 - Integrate the RAG model with existing legal research platforms to enhance their capabilities and provide users with more comprehensive legal insights.
