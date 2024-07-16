@@ -1,32 +1,23 @@
-# Problem Statement: RAG Model for Indian Property Law Analysis
+# Problem Statement: User-Centric RAG Model for Indian Legal Document Analysis
 
 ## Context
-The Indian legal system, particularly in the domain of property law, is complex and multifaceted. It involves numerous statutes, case laws, and state-specific regulations. Legal professionals often spend considerable time researching relevant precedents and statutes for property dispute cases, which can be time-consuming and may lead to overlooked relevant information.
+The Indian legal system encompasses a vast array of statutes, acts, and case laws. Legal professionals and researchers often need to analyze specific legal documents relevant to their current cases or research topics. The ability to quickly extract relevant information and insights from these documents is crucial for effective legal work.
 
 ## Problem
-Develop a Retrieval-Augmented Generation (RAG) model that assists legal professionals in efficiently analyzing property dispute cases in India by providing relevant case laws, statutes, and preliminary legal analysis.
+Develop a user-centric Retrieval-Augmented Generation (RAG) model that allows users to select from pre-loaded legal documents, upload their own documents, and then interact with a QAbot to ask questions and gain insights about the content of these documents.
 
 ## Specific Objectives
 
-1. **Information Retrieval**: The model should accurately retrieve relevant case laws, statutes, and legal principles related to a given property dispute scenario from a comprehensive database of Indian legal documents.
+1. **Pre-loaded Document Library**: Maintain a curated collection of frequently used Indian legal documents (e.g., Transfer of Property Act, Succession Act) in a vector database.
 
-2. **Case Law Analysis**: For any given property dispute scenario, the model should identify and summarize the most pertinent previous court decisions, highlighting the key legal principles established or reinforced in these cases.
+2. **Document Selection Interface**: Provide a user interface that allows users to select which pre-loaded documents to include in their current session and upload additional documents as needed.
 
-3. **Statutory Interpretation**: The model should identify and explain the relevant sections of key property-related acts (e.g., Transfer of Property Act, 1882; Land Acquisition Act, 2013) applicable to the given scenario.
+3. **Document Upload and Processing**: Implement a system to process and index user-uploaded PDF documents, adding them to the session-specific knowledge base.
 
-4. **Preliminary Legal Analysis**: Based on the retrieved information, the model should generate a preliminary analysis of how the relevant case laws and statutes might apply to the given property dispute scenario.
+4. **Interactive QAbot**: Develop a QAbot interface that allows users to ask questions about the selected and uploaded documents, receiving relevant and accurate responses.
 
+5. **Information Retrieval**: Implement a retrieval system that can quickly and accurately find relevant information from the selected and uploaded documents based on user queries.
 
-## Key Challenges
+6. **Context-Aware Responses**: Generate responses that not only provide relevant information but also consider the context of the user's question and the specific documents they've selected or uploaded.
 
-1. **Data Quality and Comprehensiveness**: Ensure the model's knowledge base includes a wide range of relevant and up-to-date legal documents from various authoritative sources.
-
-2. **Language Processing**: Handle the nuances of legal language, including complex sentence structures and domain-specific terminology.
-
-3. **Legal Reasoning**: Develop the model's capability to not just retrieve information, but to apply legal principles to new scenarios in a logically sound manner.
-
-4. **Accuracy and Reliability**: Ensure the model's outputs are accurate and reliable enough to be genuinely useful to legal professionals, while clearly communicating its limitations.
-
-
-## Future enhancements
-1. **Extend to other types of cases**
+7. **Legal Analysis**: Offer preliminary legal analysis and insights based on the content of the selected documents and the user's queries.
