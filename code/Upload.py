@@ -20,7 +20,7 @@ def read_doc(directory):
     documents=file_loader.load()
     return documents
 
-doc=read_doc('../learn-rag/pdf/')
+doc=read_doc('../pdf/')
 print("LENGTH",len(doc))
 
 def chunk_data(docs,chunk_size=800,chunk_overlap=50):

@@ -38,13 +38,25 @@ qa_chain = RetrievalQA.from_chain_type(
 
 def query_rag(question):
     result = qa_chain({"query": question})
-    return result["result"], result["source_documents"]
+    
+    # Extract the answer and source documents
+    answer = result["result"]
+    sources = result["source_documents"]
+    
+    # Print the context (retrieved documents)
+    print("Context used for generating the answer:")
+    for i, doc in enumerate(sources):
+        print(f"Context {i+1}:")
+        print(doc.page_content)
+        print("-" * 80)
+    
+    return answer, sources
 
 question = "Can you talk about  Condition restraining alienation"
 answer, sources = query_rag(question)
 print(f"Question: {question}")
 print(f"Answer: {answer}")
 print("\nSources:")
-for i, doc in enumerate(sources):
-    print(f"Source {i+1}: {doc.metadata.get('source', 'Unknown')}")
+#for i, doc in enumerate(sources):
+    #print(f"Source {i+1}: {doc.metadata.get('source', 'Unknown')}")
 
