@@ -1,71 +1,46 @@
-import openai
+import os
+import uuid
+from tqdm.auto import tqdm
+from typing import List
+import pinecone
 import langchain
-import pinecone 
 from langchain.document_loaders import PyPDFDirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Pinecone
-from langchain.llms import OpenAI
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+from langchain.docstore.document import Document
 from dotenv import load_dotenv
-import os
-import google.generativeai 
-
 
 load_dotenv()
 
-def read_doc(directory):
-    file_loader=PyPDFDirectoryLoader(directory)
-    documents=file_loader.load()
-    return documents
+def read_and_filter_doc(directory, skip_pages=6):
+    file_loader = PyPDFDirectoryLoader(directory)
+    documents = file_loader.load()
+    filtered_documents = [doc for i, doc in enumerate(documents) if i >= skip_pages]
+    return filtered_documents
 
-doc=read_doc('../pdf/')
-print("LENGTH",len(doc))
+doc = read_and_filter_doc('../pdf/')
+print("LENGTH", len(doc))
 
-def chunk_data(docs,chunk_size=800,chunk_overlap=50):
-    text_splitter=RecursiveCharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
-    doc=text_splitter.split_documents(docs)
-    return docs
+def chunk_data(docs, chunk_size=1000, chunk_overlap=70):
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    coherent_documents = []
+    for document in docs:
+        chunks = text_splitter.split_documents([document])
+        coherent_documents.extend(chunks)
+    return coherent_documents
 
-documents=chunk_data(docs=doc)
-
-print("Documents Length",len(documents))
-
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from dotenv import load_dotenv
-import os
-load_dotenv()
-api_key = os.getenv('GOOGLE_API_KEY')
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", api_key=api_key)
-
-print("Embedding",embeddings)
-
-
+documents = chunk_data(docs=doc)
+print("Documents Length", len(documents))
 
 api_key = os.getenv('GOOGLE_API_KEY')
-
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", api_key=api_key)
-
-
-sample_text = "This is a sample text to determine embedding dimensions."
-embedding_vector = embeddings.embed_query(sample_text)
-
-embedding_dimension = len(embedding_vector)
-print(f"The dimension of the embedding vector is: {embedding_dimension}")
-
+print("Embedding", embeddings)
 
 pinecone_client = pinecone.Pinecone(api_key=os.getenv("PINECONE_API_KEY"), environment=os.getenv("PINECONE_ENVIRONMENT"))
-from pinecone import Pinecone
-
-pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+pc = pinecone.Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 index = pc.Index("check1")
-
-import uuid
-from tqdm.auto import tqdm
-from typing import List
-from langchain.docstore.document import Document
-
 
 def docs_to_vectors(docs: List[Document], embeddings: GoogleGenerativeAIEmbeddings):
     vectors = []
@@ -73,30 +48,15 @@ def docs_to_vectors(docs: List[Document], embeddings: GoogleGenerativeAIEmbeddin
         embedding = embeddings.embed_query(doc.page_content)
         metadata = doc.metadata
         metadata['text'] = doc.page_content
-        vectors.append((doc.metadata.get('source', 'unknown'), embedding, metadata))
+        vectors.append((str(uuid.uuid4()), embedding, metadata))
     return vectors
 
 def upload_to_pinecone(vectors, index):
     batch_size = 100
     for i in tqdm(range(0, len(vectors), batch_size)):
         batch = vectors[i:i+batch_size]
-        
-        
-        ids = [str(uuid.uuid4()) for _ in range(len(batch))]
-        
-        
-        vector_batch = [(ids[j], vec, meta) for j, (_, vec, meta) in enumerate(batch)]
-        
-        
-        index.upsert(vectors=vector_batch)
-
-    print(f"Uploaded {len(vectors)} vectors to Pinecone index ")
-
+        index.upsert(vectors=batch)
+    print(f"Uploaded {len(vectors)} vectors to Pinecone index")
 
 vectors = docs_to_vectors(documents, embeddings)
-
 upload_to_pinecone(vectors, index)
-
-print(f"Uploaded {len(vectors)} vectors to Pinecone index")
-
-
