@@ -14,26 +14,14 @@
         <h1 class="text-4xl font-bold mb-6 text-center text-indigo-600">Indian Legal Document Analysis</h1>
         
         <div class="mb-6">
-            <h2 class="text-2xl font-semibold mb-2 text-indigo-600">Select Pre-loaded Documents</h2>
-            <select id="preloaded-docs" class="w-full" multiple="multiple">
-                <option value="transfer-of-property-act">Transfer of Property Act</option>
-                <option value="succession-act">Succession Act</option>
-                <option value="indian-contract-act">Indian Contract Act</option>
-                <option value="specific-relief-act">Specific Relief Act</option>
-                <option value="registration-act">Registration Act</option>
-                <!-- Add more pre-loaded documents as needed -->
+            <h2 class="text-2xl font-semibold mb-2 text-indigo-600">Select Document</h2>
+            <select id="preloaded-docs" class="w-full">
+                <option value="Karnataka_Land_Reforms_Act_1961">Karnataka Land Reforms Act 1961</option>
+                <option value="Real_Estate_Regulation_And_Development_Act_2016">Real Estate Regulation and Development Act 2016</option>
+                <option value="The_Indian_Contract_Act_1872">The Indian Contract Act 1872</option>
+                <option value="The_Right_To_Fair_Compensation_And_Transparency_In_Land_Acquisition_Rehabilitation_and_Resettlement_Act_2013">The Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act 2013</option>
+                <option value="trp_act">Transfer of Property Act</option>
             </select>
-        </div>
-
-        <div class="mb-6">
-            <h2 class="text-2xl font-semibold mb-2 text-indigo-600">Upload Custom Documents</h2>
-            <input type="file" accept=".pdf" multiple class="block w-full text-sm text-gray-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-indigo-50 file:text-indigo-700
-                hover:file:bg-indigo-100
-            "/>
         </div>
 
         <div class="mb-6">
@@ -46,27 +34,41 @@
         <div id="result" class="mt-8 hidden">
             <h2 class="text-2xl font-bold mb-4 text-indigo-600">Legal Analysis</h2>
             <div id="analysis" class="bg-gray-100 p-4 rounded-md shadow"></div>
-
             <h3 class="text-xl font-bold mt-6 mb-2 text-indigo-600">Relevant Legal Documents</h3>
             <ul id="relevant-docs" class="list-disc pl-5"></ul>
         </div>
     </div>
 
     <script>
-        $(document).ready(function() {
-            $('#preloaded-docs').select2({
-                placeholder: "Select pre-loaded documents",
-                allowClear: true
-            });
+    $(document).ready(function() {
+        $('#preloaded-docs').select2({
+            placeholder: "Select a document",
+            allowClear: true
         });
 
-        document.getElementById('analyze').addEventListener('click', function() {
-            // Here you would typically send the selected documents and question to your backend
-            // For demonstration, we'll just show the result div
-            document.getElementById('result').classList.remove('hidden');
-            document.getElementById('analysis').textContent = "Your analysis will appear here.";
-            document.getElementById('relevant-docs').innerHTML = "<li>Relevant document 1</li><li>Relevant document 2</li>";
+        $('#analyze').on('click', function() {
+            const question = $('#question').val();
+            const namespace = $('#preloaded-docs').val();
+            $.ajax({
+                url: 'http://localhost:5000/analyze',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ question: question, namespace: namespace }),
+                success: function(response) {
+                    $('#result').removeClass('hidden');
+                    $('#analysis').text(response.answer);
+                    let docsHtml = "";
+                    response.sources.forEach(function(doc) {
+                        docsHtml += "<li>" + doc + "</li>";
+                    });
+                    $('#relevant-docs').html(docsHtml);
+                },
+                error: function() {
+                    alert('Error processing your request');
+                }
+            });
         });
+    });
     </script>
 </body>
 </html>
