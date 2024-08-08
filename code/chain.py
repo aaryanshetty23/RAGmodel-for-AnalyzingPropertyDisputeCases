@@ -1,4 +1,5 @@
-from langchain.vectorstores import Pinecone as LangchainPinecone
+#from langchain.vectorstores import Pinecone as LangchainPinecone
+from langchain_community.vectorstores import Pinecone as LangchainPinecone
 from langchain.chains import RetrievalQA
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import PromptTemplate
@@ -17,7 +18,7 @@ def init_vectorstore(namespace):
 
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro-latest", temperature=0.5)
 
-prompt_template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+prompt_template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer. Try to give a summary of the context in your own word, so that its easier for the user to understand.
 
 {context}
 
